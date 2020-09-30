@@ -183,7 +183,9 @@ class Receivers:
         """
         if packet.flags.qos in [0, 3]:
             qos = packet.flags.qos
-            topicname = packet.topic_name.decode('utf-8')
+            topicname = packet.topic_name
+            if not isinstance(topicname, str):
+               topicname=topicname.decode('utf-8')
             data = packet.data
             log.debug(f'DATA ON MQTTSN: {data}')
             if qos == 3:

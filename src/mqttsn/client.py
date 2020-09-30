@@ -25,6 +25,7 @@ import uuid
 
 from .lib.connects import Connects
 from .lib.disconnects import Disconnects
+from .lib.ping import Pingreqs
 from .lib.publishes import Publishes
 from .lib.helpers import unpack_packet, get_packet
 from .lib.registers import Registers
@@ -32,7 +33,7 @@ from .lib.unsubscribes import Unsubscribes
 from .lib.subscribes import Subscribes
 from .lib.names import (
     CONNACK, TOPIC_NORMAL, TOPIC_SHORTNAME, TOPIC_PREDEFINED,
-    DISCONNECT, REGACK, SUBACK, UNSUBACK
+    DISCONNECT, PINGRESP, REGACK, SUBACK, UNSUBACK
 )
 from . import internal
 
@@ -221,12 +222,25 @@ class Client:
         self.sock.send(publish.pack())
         return publish.msg_id
 
-    def disconnect(self):
+    def disconnect(self, duration=None):
         disconnect = Disconnects()
+        if duration != None:
+            disconnect.duration = duration
         if self.__receiver:
             self.__receiver.lookfor(DISCONNECT)
         self.sock.send(disconnect.pack())
         self.waitfor(DISCONNECT)
+
+
+    def pingReg(self):
+        pingreg = Pingreqs()
+        pingreg.client_id = self.client_id
+        if self.__receiver:
+            self.__receiver.lookfor(PINGRESP)
+
+        self.sock.send(pingreg.pack())
+        self.waitfor(PINGRESP)
+
 
     def stop_receiver(self):
         self.sock.close()  # this will stop the receiver too
