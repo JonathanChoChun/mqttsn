@@ -26,9 +26,9 @@ class Flags:
         Returns:
             printable representation of data
         """
-        return f'< dup {self.dup}, qos {self.qos}, retain {self.retain}, ' \
-               f'will {self.will}, clean_session {self.clean_session}, ' \
-               f'topic_id_type {self.topic_id_type} >'
+        return '< dup {self.dup}, qos {self.qos}, retain {self.retain}, ' \
+               'will {self.will}, clean_session {self.clean_session}, ' \
+               'topic_id_type {self.topic_id_type} >'.format(self.dup,self.qos,self.retain,self.will,self.clean_session,self.topic_id_type)
 
     def pack(self):
         """

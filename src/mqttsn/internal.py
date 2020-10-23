@@ -89,23 +89,23 @@ class Receivers:
             packet, address = unpack_packet(*val)
         except Exception:
             if sys.exc_info()[0] != socket.timeout:
-                log.error(f'Unexpected exception {sys.exc_info()}')
+                log.error('Unexpected exception {sys.exc_info()}'.format(sys.exc_info()))
                 raise sys.exc_info()
         if packet is None:
             time.sleep(0.1)
             return
 
-        log.debug(f'Chegou Packet: {packet}')
+        #log.debug('Chegou Packet: {packet}'.format(packet))
 
         if self.observe == packet.mh.msg_type:
-            log.debug(f'Observed packet: {packet}')
+            #log.debug('Observed packet: {packet}'.format(packet))
             self.observed.append(packet)
 
         elif packet.mh.msg_type in self._actions:
             self._actions[packet.mh.msg_type](packet, callback, address)
 
         else:
-            raise Exception(f'Unexpected packet {packet}')
+            raise Exception('Unexpected packet {packet}'.format(packet))
         return packet
 
     def __call__(self, callback):
@@ -114,7 +114,7 @@ class Receivers:
                 self.receive(callback)
         except Exception:
             if sys.exc_info()[0] != socket.error:
-                log.error(f"Unexpected exception {sys.exc_info()}")
+                #log.error("Unexpected exception {sys.exc_info()}".format(sys.exc_info()))
                 traceback.print_exc()
 
     def _process_advertise(self, packet, callback, address):
@@ -134,7 +134,7 @@ class Receivers:
                 callback.published(packet.msg_id)
         else:
             raise Exception(
-                f'No qos 1 message with message id {packet.msg_id} sent'
+                'No qos 1 message with message id {packet.msg_id} sent'.format(packet.msg_id)
             )
 
     def _process_pubrec(self, packet, callback, *args):
@@ -174,7 +174,7 @@ class Receivers:
                 callback.published(packet.msg_id)
         else:
             raise Exception(
-                f'PUBCOMP received for unknown msg_id: {packet.msg_id}'
+                'PUBCOMP received for unknown msg_id: {packet.msg_id}'.format(packet.msg_id)
             )
 
     def _process_publish(self, packet, callback, *args):
@@ -183,11 +183,9 @@ class Receivers:
         """
         if packet.flags.qos in [0, 3]:
             qos = packet.flags.qos
-            topicname = packet.topic_name
-            if not isinstance(topicname, str):
-               topicname=topicname.decode('utf-8')
+            topicname = packet.topic_name.decode('utf-8')
             data = packet.data
-            log.debug(f'DATA ON MQTTSN: {data}')
+            #log.debug('DATA ON MQTTSN: {data}'.format(data))
             if qos == 3:
                 qos = -1
                 # [FIXME] TOPIC_NORMAL is a workaround to this problem

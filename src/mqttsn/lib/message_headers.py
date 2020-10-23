@@ -21,7 +21,7 @@ class MessageHeaders:
         Returns:
             printable stresentation of our data
         """
-        return f'length {self.length}, {packet_names[self.msg_type]}'
+        return 'length {self.length}, {packet_names[self.msg_type]}'.format(self.length,packet_names[self.mesg_type])
 
     def pack(self, bufferlen):
         """

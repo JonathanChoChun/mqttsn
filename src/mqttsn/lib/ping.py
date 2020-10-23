@@ -13,7 +13,7 @@ class Pingreqs(Packets):
 
     def pack(self):
         if self.client_id:
-            buf = self.mh.pack(len(self.client_id)) + self.client_id.encode()
+            buf = self.mh.pack(len(self.client_id)) + chr_(self.client_id)
         else:
             buf = self.mh.pack(0)
         return buf
@@ -28,7 +28,7 @@ class Pingreqs(Packets):
     def __str__(self):
         buf = str(self.mh)
         if self.client_id:
-            buf += f', client_id {self.client_id}'
+            buf += ', client_id {self.client_id}'.format(self.client_id)
         return buf
 
     def __eq__(self, packet):

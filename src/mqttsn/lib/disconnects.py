@@ -30,7 +30,7 @@ class Disconnects(Packets):
     def __str__(self):
         buf = str(self.mh)
         if self.duration:
-            buf += f', duration {self.duration}'
+            buf += ', duration {self.duration}'.format(self.duration)
         return buf
 
     def __eq__(self, packet):

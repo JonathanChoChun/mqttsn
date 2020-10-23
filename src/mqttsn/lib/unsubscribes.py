@@ -41,13 +41,13 @@ class Unsubscribes(Packets):
             self.topic_id = buffer[pos:pos+2]
 
     def __str__(self):
-        buffer = f'{self.mh}, flags {self.flags}, msg_id {self.msg_id}'
+        buffer = '{self.mh}, flags {self.flags}, msg_id {self.msg_id}'.format(self.mh,self.flags,self.msg_id)
         if self.flags.topic_id_type == 0:
-            buffer += f', topic_name {self.topic_name}'
+            buffer += ', topic_name {self.topic_name}'.format(self.topic_name)
         elif self.flags.topic_id_type == 1:
-            buffer += f', topic_id {self.topic_id}'
+            buffer += ', topic_id {self.topic_id}'.format(self.topic_id)
         elif self.flags.topic_id_type == 2:
-            buffer += f', topic_id {self.topic_id}'
+            buffer += ', topic_id {self.topic_id}'.format(self.topic_id)
         return buffer
 
     def __eq__(self, packet):
@@ -74,7 +74,7 @@ class Unsubacks(Packets):
         self.msg_id = read_int_16(buffer[pos:])
 
     def __str__(self):
-        return f'{self.mh}, msg_id {self.msg_id}'
+        return '{self.mh}, msg_id {self.msg_id}'.format(self.mh,self.msg_id)
 
     def __eq__(self, packet):
         return Packets.__eq__(self, packet) and self.msg_id == packet.msg_id

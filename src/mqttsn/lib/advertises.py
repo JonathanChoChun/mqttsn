@@ -24,7 +24,7 @@ class Advertises(Packets):
         self.duration = read_int_16(buffer[pos:])
 
     def __str__(self):
-        return f'{self.mh}, gw_id {self.gw_id}, duration {self.duration}'
+        return '{self.mh}, gw_id {self.gw_id}, duration {self.duration}'.format(self.mh,self.gw_id,self.duration)
 
     def __eq__(self, packet):
         return Packets.__eq__(self, packet) and \

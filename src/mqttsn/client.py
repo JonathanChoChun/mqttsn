@@ -25,7 +25,6 @@ import uuid
 
 from .lib.connects import Connects
 from .lib.disconnects import Disconnects
-from .lib.ping import Pingreqs
 from .lib.publishes import Publishes
 from .lib.helpers import unpack_packet, get_packet
 from .lib.registers import Registers
@@ -33,7 +32,7 @@ from .lib.unsubscribes import Unsubscribes
 from .lib.subscribes import Subscribes
 from .lib.names import (
     CONNACK, TOPIC_NORMAL, TOPIC_SHORTNAME, TOPIC_PREDEFINED,
-    DISCONNECT, PINGRESP, REGACK, SUBACK, UNSUBACK
+    DISCONNECT, REGACK, SUBACK, UNSUBACK
 )
 from . import internal
 
@@ -46,21 +45,21 @@ class Callback:
         self.registered = {}
 
     def connection_lost(self, cause):
-        log.warning(f'Connection Lost: {cause}')
+        log.warning("Connection Lost: {cause}".format(cause))
         self.events.append("Disconnected")
 
     def message_arrived(self, topic_name, payload, qos, retained, msgid):
         log.debug(
-            f'Publish Arrived: {topic_name}, {payload}, '
-            f'{qos}, {retained}, {msgid}'
+            "Publish Arrived: {topic_name}, {payload}, "
+            "{qos}, {retained}, {msgid}".format(topic_name,payload,qos,retained,msgid)
         )
         return True
 
     def delivery_complete(self, msgid):
-        log.debug(f'Delivery Complete')
+        log.debug('Delivery Complete'.format())
 
     def advertise(self, address, gwid, duration):
-        log.debug(f'Advertise: {address}, {gwid}, {duration}')
+        log.debug('Advertise: {address}, {gwid}, {duration}'.format(address,gwid,duration))
 
     def register(self, topic_id, topic_name):
         self.registered[topic_id] = topic_name
@@ -124,7 +123,7 @@ class Client:
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         # self.sock.settimeout(5.0)
 
-        log.info(f'Connecting to {self.host_}:{self.port_}')
+       # log.info(f'Connecting to {self.host_}:{self.port_}')
         # log.info(f'Connecting to {self.host_}:{self.port_}')
         self.sock.connect((self.host_, self.port_))
 
@@ -214,33 +213,20 @@ class Client:
             publish.msg_id = 0
         else:
             publish.msg_id = self.__next_msg_id()
-            log.debug(f'Message ID: {publish.msg_id}')
+          #  log.debug(f'Message ID: {publish.msg_id}')
             self.__receiver.out_msgs[publish.msg_id] = publish
         publish.data = payload
-        print(f'PUBLISH: {publish.__str__()}')
-        print(f'PAYLOAD LEN: {len(payload)}')
+        #print(f'PUBLISH: {publish.__str__()}')
+        #print(f'PAYLOAD LEN: {len(payload)}')
         self.sock.send(publish.pack())
         return publish.msg_id
 
-    def disconnect(self, duration=None):
+    def disconnect(self):
         disconnect = Disconnects()
-        if duration != None:
-            disconnect.duration = duration
         if self.__receiver:
             self.__receiver.lookfor(DISCONNECT)
         self.sock.send(disconnect.pack())
         self.waitfor(DISCONNECT)
-
-
-    def pingReg(self):
-        pingreg = Pingreqs()
-        pingreg.client_id = self.client_id
-        if self.__receiver:
-            self.__receiver.lookfor(PINGRESP)
-
-        self.sock.send(pingreg.pack())
-        self.waitfor(PINGRESP)
-
 
     def stop_receiver(self):
         self.sock.close()  # this will stop the receiver too
@@ -268,7 +254,7 @@ def publish(topic, payload, retained=False, port=1883, host="localhost"):
         publish.flags.topic_id_type = TOPIC_NORMAL
         publish.topic_id = topic
     publish.msg_id = 0
-    log.debug(f'payload {payload}')
+   # log.debug(f'payload {payload}')
     publish.data = payload
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.sendto(publish.pack(), (host, port))

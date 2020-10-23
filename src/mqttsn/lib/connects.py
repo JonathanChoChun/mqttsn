@@ -34,9 +34,9 @@ class Connects(Packets):
         self.client_id = buffer[pos:]
 
     def __str__(self):
-        return f'{self.mh}, flags {self.flags}, protocol_id ' \
-               f'{self.protocol_id}, duration {self.duration}, ' \
-               f'client_id {self.client_id}'
+        return '{self.mh}, flags {self.flags}, protocol_id ' \
+               '{self.protocol_id}, duration {self.duration}, ' \
+               'client_id {self.client_id}'.format(self.mh,self.flags,self.protocol_id,self.duration,self.client_id)
 
     def __eq__(self, packet):
         rc = Packets.__eq__(self, packet) and \
@@ -64,7 +64,7 @@ class Connacks(Packets):
         self.return_code = buffer[pos]
 
     def __str__(self):
-        return f'{self.mh}, return_code {self.return_code}'
+        return '{self.mh}, return_code {self.return_code}'.format(self.mh,self.return_code)
 
     def __eq__(self, packet):
         return Packets.__eq__(self, packet) and \

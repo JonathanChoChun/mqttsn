@@ -28,8 +28,8 @@ class Registers(Packets):
         self.topic_name = buffer[pos:self.mh.length]
 
     def __str__(self):
-        return f'{self.mh}, topic_id {self.topic_id}, msg_id {self.msg_id}, ' \
-            f'topic_name {self.topic_name}'
+        return '{self.mh}, topic_id {self.topic_id}, msg_id {self.msg_id}, ' \
+            'topic_name {self.topic_name}'.format(self.mh,self.topic_id,self.msg_id,self.topic_name)
 
     def __eq__(self, packet):
         return Packets.__eq__(self, packet) and \
@@ -62,8 +62,8 @@ class Regacks(Packets):
         self.return_code = buffer[pos]
 
     def __str__(self):
-        return f'{self.mh}, topic_id {self.topic_id}, msg_id {self.msg_id}, ' \
-            f'return_code {self.return_code}'
+        return '{self.mh}, topic_id {self.topic_id}, msg_id {self.msg_id}, ' \
+            'return_code {self.return_code}'.format(self.mh,self.topic_id,self.msg_id,self.return_code)
 
     def __eq__(self, packet):
         return Packets.__eq__(self, packet) and \

@@ -18,7 +18,7 @@ def get_packet(a_socket):
     """
     buf, address = a_socket.recvfrom(65535)  # get the first byte fixed header
 
-    log.debug(f'buf {buf} addr {address} ord {buf[0]}')
+    #log.debug('buf {buf} addr {address} ord {buf[0]}'.format(buf,address,buf[0]))
     if buf == b'':
         return None
 
@@ -57,7 +57,7 @@ def readUTF(buffer):
 def unpack_packet(*args):
     buffer, address = args
     if message_type(buffer) is not None:
-        log.debug(f'{buffer} {message_type} {address}')
+        #log.debug('{buffer} {message_type} {address}'.format(buffer,message_type,address))
         packet = get_objects()[message_type(buffer)]()
         packet.unpack(buffer)
     else:

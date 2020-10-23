@@ -22,7 +22,7 @@ class SearchGWs(Packets):
         self.radius = read_int_16(buffer[pos:])
 
     def __str__(self):
-        return f'{self.mh}, radius {self.radius}'
+        return '{self.mh}, radius {self.radius}',format(self.mh,self.radius)
 
 
 class GWInfos(Packets):
@@ -51,7 +51,7 @@ class GWInfos(Packets):
             self.gw_add = buffer[pos:]
 
     def __str__(self):
-        buf = f'{self.mh} radius {self.gw_id}'
+        buf = '{self.mh} radius {self.gw_id}'.format(self.mh,self.gw_id)
         if self.gw_add:
-            buf += f' gw_add {self.gw_add}'
+            buf += ' gw_add {self.gw_add}'.format(self.gw_add)
         return buf

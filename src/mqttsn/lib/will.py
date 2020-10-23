@@ -39,7 +39,7 @@ class WillTopics(Packets):
         self.will_topic = buffer[pos:self.mh.length]
 
     def __str__(self):
-        return f'{self.mh}, flags {self.flags}, will_topic {self.will_topic}'
+        return '{self.mh}, flags {self.flags}, will_topic {self.will_topic}'.format(self.mh,self.flags,self.will_topic)
 
     def __eq__(self, packet):
         return Packets.__eq__(self, packet) and \
@@ -75,7 +75,7 @@ class WillMsgs(Packets):
         self.will_msg = buffer[pos:self.mh.length]
 
     def __str__(self):
-        return f'{self.mh}, will_msg {self.will_msg}'
+        return '{self.mh}, will_msg {self.will_msg}'.format(self.mh,self.will_msg)
 
     def __eq__(self, packet):
         return Packets.__eq__(self, packet) and \
@@ -101,7 +101,7 @@ class WillTopicUpds(Packets):
         self.will_topic = buffer[pos:self.mh.length]
 
     def __str__(self):
-        return f'{self.mh}, flags {self.flags}, will_topic {self.will_topic}'
+        return '{self.mh}, flags {self.flags}, will_topic {self.will_topic}'.format(self.mh,self.flags,self.will_topic)
 
     def __eq__(self, packet):
         return Packets.__eq__(self, packet) and \
@@ -125,7 +125,7 @@ class WillMsgUpds(Packets):
         self.will_msg = buffer[pos:self.mh.length]
 
     def __str__(self):
-        return f'{self.mh}, will_msg {self.will_msg}'
+        return '{self.mh}, will_msg {self.will_msg}'.format(self.mh,self.will_msg)
 
     def __eq__(self, packet):
         return Packets.__eq__(self, packet) and \
@@ -149,7 +149,7 @@ class WillTopicResps(Packets):
         self.return_code = read_int_16(buffer[pos:])
 
     def __str__(self):
-        return f'{self.mh}, return_code {self.return_code}'
+        return '{self.mh}, return_code {self.return_code}'.format(self.mh,self.return_code)
 
     def __eq__(self, packet):
         return Packets.__eq__(self, packet) and \
@@ -173,7 +173,7 @@ class WillMsgResps(Packets):
         self.return_code = read_int_16(buffer[pos:])
 
     def __str__(self):
-        return f'{self.mh}, return_code {self.return_code}'
+        return '{self.mh}, return_code {self.return_code}'.format(self.mh,self.return_code)
 
     def __eq__(self, packet):
         return Packets.__eq__(self, packet) and \

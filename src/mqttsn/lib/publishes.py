@@ -35,7 +35,7 @@ class Publishes(Packets):
 
         # TopicID bytes (2)
         if self.flags.topic_id_type in [TOPIC_NORMAL, TOPIC_PREDEFINED, 3]:
-            log.debug(f'Topic id: {self.topic_id}')
+            #log.debug('Topic id: {self.topic_id}'.format(self.topic_id))
             buffer += write_int_16(self.topic_id)
         elif self.flags.topic_id_type == TOPIC_SHORTNAME:
             buffer += (self.topic_name + "  ")[0:2].encode('utf-8')
@@ -49,7 +49,7 @@ class Publishes(Packets):
 
         # Length + MsgType bytes
         buffer = self.mh.pack(len(buffer)) + buffer
-        print(f'BUFFER: {buffer}')
+        #print('BUFFER: {buffer}'.format(buffer))
 
         return buffer
 
@@ -71,8 +71,8 @@ class Publishes(Packets):
         self.data = buffer[pos:self.mh.length]
 
     def __str__(self):
-        return f'{self.mh}, flags {self.flags}, topic_id {self.topic_id}, ' \
-               f'msg_id {self.msg_id}, data {self.data}'
+        return '{self.mh}, flags {self.flags}, topic_id {self.topic_id}, ' \
+               'msg_id {self.msg_id}, data {self.data}'.format(self.mh,self.flags,self.topic_id,self.msg_id,self.data)
 
     def __eq__(self, packet):
         return Packets.__eq__(self, packet) and \
@@ -98,7 +98,7 @@ class Pubrecs(Packets):
         self.msg_id = read_int_16(buffer[pos:])
 
     def __str__(self):
-        return f'{self.mh}, msg_id {self.msg_id}'
+        return '{self.mh}, msg_id {self.msg_id}'.format(self.mh,self.msg_id)
 
     def __eq__(self, packet):
         return Packets.__eq__(self, packet) and self.msg_id == packet.msg_id
@@ -120,7 +120,7 @@ class Pubrels(Packets):
         self.msg_id = read_int_16(buffer[pos:])
 
     def __str__(self):
-        return f'{self.mh}, msg_id {self.msg_id}'
+        return '{self.mh}, msg_id {self.msg_id}'.format(self.mh,self.msg_id)
 
     def __eq__(self, packet):
         return Packets.__eq__(self, packet) and self.msg_id == packet.msg_id
@@ -142,7 +142,7 @@ class Pubcomps(Packets):
         self.msg_id = read_int_16(buffer[pos:])
 
     def __str__(self):
-        return f'{self.mh}, msg_id {self.msg_id}'
+        return '{self.mh}, msg_id {self.msg_id}'.format(self.mh,self.msg_id)
 
     def __eq__(self, packet):
         return Packets.__eq__(self, packet) and self.msg_id == packet.msg_id
@@ -172,8 +172,8 @@ class Pubacks(Packets):
         self.return_code = buffer[pos]
 
     def __str__(self):
-        return f'{self.mh}, topic_id {self.topic_id}, msg_id {self.msg_id}, ' \
-               f'return_code {self.return_code}'
+        return '{self.mh}, topic_id {self.topic_id}, msg_id {self.msg_id}, ' \
+               'return_code {self.return_code}'.format(self.mh,self.topic_id,self.msg_id,self.return_code)
 
     def __eq__(self, packet):
         return Packets.__eq__(self, packet) and \
