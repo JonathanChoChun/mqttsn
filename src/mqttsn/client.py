@@ -121,7 +121,7 @@ class Client:
 
     def connect(self, clean_session=True):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        # self.sock.settimeout(5.0)
+        self.sock.settimeout(5.0)
 
        # log.info(f'Connecting to {self.host_}:{self.port_}')
         # log.info(f'Connecting to {self.host_}:{self.port_}')
@@ -221,8 +221,10 @@ class Client:
         self.sock.send(publish.pack())
         return publish.msg_id
 
-    def disconnect(self):
+    def disconnect(self, duration=None):
         disconnect = Disconnects()
+        if duration != None:
+            disconnect.duration = duration
         if self.__receiver:
             self.__receiver.lookfor(DISCONNECT)
         self.sock.send(disconnect.pack())
